@@ -281,6 +281,17 @@ span.choose {
 .dropdown1.active .select>i {
     transform: rotate(-180deg);
 }
+.rc{
+    height: 500px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: xx-large;
+}
+
+.rc > h1{
+    text-align: center;
+}
 
 .dropdown1 .dropdown-menu1 {
     position: absolute;
@@ -344,6 +355,8 @@ form
     padding: 20px;
     margin: 20px 0;
     border-radius: 15px;
+    filter: blur(1px);
+    -webkit-filter: blur(1px);
 }
 
 .participant-label {
