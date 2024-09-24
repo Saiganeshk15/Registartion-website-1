@@ -214,7 +214,7 @@ function createParticipantSections(numParticipants) {
                             </div>
                             <input id="p${i}f10" value="" type="hidden" name="Interest">
                             <ul class="dropdown-menu1" style="z-index: 100">
-                                <li id="Grapgic Design">Grapgic Design</li>
+                                <li id="Graphic design">Graphic design</li>
                                 <li id="UI/UX Design">UI/UX Design</li>
                                 <li id="Both">Both</li>
                             </ul>
