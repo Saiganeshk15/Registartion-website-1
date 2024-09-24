@@ -524,7 +524,7 @@ document.querySelector(".submit").addEventListener("click", async (e) => {
             <div>Thank you.</div>
             <div><br></div>
             <div><b>Regards,</b></div>
-            <div><b>RSM</b></div>
+            <div><b>Team RSM.</b></div>
         </div>
         <div><br></div>
     </div>
