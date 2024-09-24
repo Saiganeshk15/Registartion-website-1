@@ -1,6 +1,13 @@
+// Comment script.js in index.html
+// Uncomment .registration-closed 
+// Comment .please-wait 
+// Uncomment css in .partcipants
+
+
 var teamSize = 1;
 let teamSizes;
 var msg = document.querySelector(".msg");
+let submitButton = document.querySelector(".submit");
 
 function createSpanPoints(numParticipants) {
     const spanPoints = document.querySelector(".span-slider");
@@ -172,6 +179,50 @@ function createParticipantSections(numParticipants) {
                     <p id="p${i}w6" class="war">Enter valid Phone No</p>
                 </div>
             </div>
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="form__group field">
+                        <div class="dropdown1 form__field">
+                            <div class="select">
+                                <span name="Member" class="choice">Are you a member of IEEE</span>
+                                <i class="fa fa-chevron-down"></i>
+                            </div>
+                            <input id="p${i}f8" value="" type="hidden" name="Member">
+                            <ul class="dropdown-menu1">
+                                <li id="Yes">Yes</li>
+                                <li id="No">No</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <p id="p${i}w8" class="war">Select valid option</p>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form__group field">
+                        <input type="text" class="form__field" placeholder="Membership ID"
+                             name="participant-${i}-email"
+                            id="p${i}f9" required="">
+                        <label for="p${i}f9" class="form__label">Membership ID</label>
+                    </div>
+                    <p id="p${i}w9" class="war">Enter valid membership id</p>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form__group field">
+                        <div class="dropdown1 form__field">
+                            <div class="select">
+                                <span name="Interest" class="choice">Which session are you most excited about? </span>
+                                <i class="fa fa-chevron-down"></i>
+                            </div>
+                            <input id="p${i}f10" value="" type="hidden" name="Interest">
+                            <ul class="dropdown-menu1" style="z-index: 100">
+                                <li id="Grapgic Design">Grapgic Design</li>
+                                <li id="UI/UX Design">UI/UX Design</li>
+                                <li id="Both">Both</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <p id="p${i}w10" class="war">Select valid Section</p>
+                </div>
+            </div>
         </div>
       `;
 
@@ -184,7 +235,7 @@ function createParticipantSections(numParticipants) {
         
         <div class="col-sm-12">
                     <div class="form__group fields que">
-                    <p>Rate your expertise in solving problems based on electric circuits.</p>
+                    <p>Rate your designing skills on a scale of 10.</p>
                         <div class="dropdown1 form__field">
                             <div class="select">
                                 <span name="Scale" class="choice">Scale</span>
@@ -192,6 +243,11 @@ function createParticipantSections(numParticipants) {
                             </div>
                             <input id="q1" value="" type="hidden" name="Scale">
                             <ul class="dropdown-menu1">
+                                <li id="10">10</li>
+                                <li id="9">9</li>
+                                <li id="8">8</li>
+                                <li id="7">7</li>
+                                <li id="6">6</li>
                                 <li id="5">5</li>
                                 <li id="4">4</li>
                                 <li id="3">3</li>
@@ -206,9 +262,9 @@ function createParticipantSections(numParticipants) {
     <div class="row">
         <div class="col-sm-12">
             <div class="form__group fields que1">
-                <p>Do you have experience in designing and building circuits?</p>
+                <p>Why do you want to participate in DesignX 2.0?</p>
                 <input type="text" id="q2" class="form__field que1"
-                    placeholder="How do you think this workshop will benefit your understanding of the image processing techniques?" required="">
+                    placeholder="Why do you want to participate in DesignX 2.0?" required="">
                 <!-- <label for="p2f6" class="form__label">How do you think this workshop will benefit
                     your understanding of the image processing techniques?</label> -->
             </div>
@@ -217,14 +273,22 @@ function createParticipantSections(numParticipants) {
     </div>
     <div class="row">
         <div class="col-sm-12">
-            <div class="form__group fields que">
-                <p>Share your view on usage of Electric Vehicle (EV) for sustainable transportation.</p>
-                <input type="text" id="q3" class="form__field que"
-                    placeholder="What are your expectations from this workshop?" required="">
-                <!-- <label class="form__label">What are your expectations from this workshop?</label> -->
-            </div>
-            <p id="q3w" class="war qw">Enter valid Answer</p>
-        </div>
+                    <div class="form__group fields que">
+                    <p>Do you have any prior experience in graphic design or UI/UX?</p>
+                        <div class="dropdown1 form__field">
+                            <div class="select">
+                                <span name="Experience" class="choice">Experience</span>
+                                <i class="fa fa-chevron-down"></i>
+                            </div>
+                            <input id="q3" value="" type="hidden" name="Scale">
+                            <ul class="dropdown-menu1">
+                                <li id="Yes">Yes</li>
+                                <li id="No">No</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <p id="q3w" class="war qw">Select a valid number</p>
+                </div>
     </div>
 </div>
 </div>`;
@@ -278,10 +342,11 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 db.settings({ timestampsInSnapshots: true });
-const teams = db.collection("PESTeams");
-const mail = db.collection("PESMails");
+const teams = db.collection("RSMTeams");
+const mail = db.collection("RSMMails");
 
 document.querySelector(".submit").addEventListener("click", async (e) => {
+    submitButton.style.display = "none";
     e.preventDefault();
     let emails = [];
     let users = [];
@@ -299,15 +364,18 @@ document.querySelector(".submit").addEventListener("click", async (e) => {
         5: "sec",
         6: "phno",
         7: "college",
+        8: "Membership",
+        9: "Membership ID",
+        10: "Interest",
     };
     var data = {};
     for (let i = 1; i <= teamSize; i++) {
-        for (let j = 0; j <= 7; j++) {
+        for (let j = 0; j <= 10; j++) {
             let values;
             document
                 .querySelector(`#p${i}w${j}`)
                 .classList.remove("war-active");
-            if (document.querySelector(`#p${i}f${j}`).value == "") {
+            if (document.querySelector(`#p${i}f${j}`).value == "" && j!= 9) {
                 document
                     .querySelector(`#p${i}w${j}`)
                     .classList.add("war-active");
@@ -363,6 +431,7 @@ document.querySelector(".submit").addEventListener("click", async (e) => {
         }
     }
     if (flag) {
+        submitButton.style.display = "inline-block";
         return;
     }
     await teams
@@ -389,7 +458,8 @@ document.querySelector(".submit").addEventListener("click", async (e) => {
 
             //     }
             // ],
-            subject: "CONFIRMATION MAIL FOR CIRCUITRY | IEEE - VBIT SB",
+            //formatting doc can be found in ../Scripts/mail.html
+            subject: "CONFIRMATION MAIL FOR DESIGNX 2.0 | IEEE - VBIT SB",
             html: `<!DOCTYPE html>
       <html lang="en">
       <head>
@@ -400,59 +470,61 @@ document.querySelector(".submit").addEventListener("click", async (e) => {
       <body>
           <p>Dear ${users[0]},</p>
           <div>
-            <div>Greetings from Power & Energy Society | IEEE - VBIT SB.</div>
+            <div>Greetings from Resource and Skill Management team | IEEE - VBIT SB.</div>
             <div><br></div>
             <div>Congratulations!</div>
             <div><br></div>
-            <div><b>“Elicit erudition through perceptive knowledge.”</b></div>
+            <div><b>“Success occurs at the convergence of diligence and opportunity.”</b></div>
             <div><br></div>
-            <div>We are excited to inform that you have successfully registered for the two-day event, “Circuitry”.
+            <div>We are excited to inform that you have successfully registered for the two-day event, “DesignX 2.0”.
             </div>
             <div><br></div>
             <div>Kindly refer to the following details of the event.</div>
             <div><br></div>
             <div><b>Day-1:</b></div>
             <div><b><br></b></div>
-            <div><b>Date:</b> 26th April, 2024.</div>
+            <div><b>Date:</b> 27th September, 2024.</div>
             <div><b>Time:</b> 10:00 AM to 4:20 PM.</div>
             <div><b>Venue:</b> Nalanda Auditorium, Vignana Bharathi Institute of Technology.</div>
             <div><br></div>
-            <div>You will participate in a competition focused on the design and construction of electronic circuits.
-                Winners are accoladed with exciting goodies and prizes.</div>
+            <div>You will be introduced to foundational principles of Graphic Design and UI/UX methodologies.</div>
             <div><br></div>
             <div><b>Day-2: </b></div>
             <div><b><br></b></div>
-            <div><b>Date:</b> 27th April, 2024.</div>
+            <div><b>Date:</b> 28th September, 2024.</div>
             <div><b>Time:</b> 10:00 AM to 4:20 PM.</div>
             <div><b>Venue:</b> Nalanda Auditorium, Vignana Bharathi Institute of Technology.</div>
             <div><br></div>
-            <div>You will be acquainted with evolution, working principles and the latest advancements in the field of
-                electric mobility and innovation.</div>
+            <div>You will participate in a competition focused on the design of a poster and 
+                user-centric, visually compelling interfaces.</div>
             <div><br></div>
-            <div>This event facilitates an opportunity to augment your understanding of complex electronic components
-                and circuits.</div>
+            <div>This event facilitates an opportunity to augment your understanding of latest design trends and practices, 
+                gaining valuable skills to develop seamless, intuitive user experiences.</div>
+            <div><br></div>
+            <div>Download the resources from the provided link: https://bit.ly/DesignX_Resources</div>
             <div><br></div>
             <div><b>Note:</b> </div>
-            <div>1. One laptop per team is required.</div>
-            <div>2. Carry one extension box per team. </div>
-            <div>3. It is mandatory to attend both the days.</div>
+            <div>1. There is no registration fee.</div>
+            <div>2. Mode of Participation: Individual.</div>
+            <div>3. Laptop is required for everyone.</div>
+            <div>4. Limited registrations only.</div>
             <div><br></div>
-            <div>In case of any queries, contact us at: </div>
-            <div>Sainath: +91 9014381577 </div>
-            <div>Karthik: +91 8367655892</div>
+            <div>In case of any queries, contact us at:</div>
+            <div>Venkata Ramana: +91 73306 45050</div>
+            <div>Sai Kumar: +91 83285 18468</div>
             <div><br></div>
-            <div>For further information, kindly visit our website: </div>
-            <div><i>https://ieeevbitsb.in/ </i></div>
+            <div>For further information, kindly visit our website:</div>
+            <div><i>https://ieeevbitsb.in/</i></div>
             <div><br></div>
             <div>Follow us on social media for the latest updates.</div>
             <div><b>Instagram:</b><i> https://instagram.com/ieee_vbitsb</i></div>
             <div><b>Facebook:</b><i> https://www.facebook.com/ieeevbitsb/</i></div>
             <div><b>LinkedIn:</b> <i>https://www.linkedin.com/company/ieee-vbit-sb/</i></div>
             <div><br></div>
-            <div>Thank you. </div>
+            <div>Thank you.</div>
             <div><br></div>
-            <div><b>Regards, </b></div>
-            <div><b>PES | IEEE - VBIT SB.</b></div>
+            <div><b>Regards,</b></div>
+            <div><b>RSM</b></div>
         </div>
         <div><br></div>
     </div>
